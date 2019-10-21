@@ -1,169 +1,33 @@
-#include <fstream>
-#include <iostream>
-#include <string>
-#include <sstream>
-#include <vector>
-#include <cstdlib>
-#include <stdlib.h>
-#include <time.h>
+#include "dkalgmain.h"
 using namespace std;
 
-class Player{
-private:
-public:
-  string pos;
-  string name;
-  int id;
-  int salary;
-  double average;
 
-
-
-
-};
 
 int main()
 {
-  vector<Player> rbList;
-  vector<Player> wrList;
-  vector<Player> teList;
-  vector<Player> qbList;
-  vector<Player> defList;
-  vector<Player> flexList;
-  vector<Player> team;
-  vector<Player> finalTeam;
+  while(1){
+  int userInp;
+  cout<<"Which type of game are you wanting?"<<endl;
+  cout<<"1. Full Game"<<endl;
+  cout<<"2. Show Down"<<endl;
+  cout<<"9. Exit"<<endl;
 
-  Player plyr;
-  string inpS;
-  int inpI, finalSal, loopNum;
-  int totSalary=0;
-  double maxTeamAvg=0.0;
-  double totPoints;
-  double inpF;
-  int maxSalary = 50000;
-
-
-
-srand(time(NULL));
-ifstream fin;
-fin.open("DKSalaries.txt");
-getline(fin, inpS);
-
-while(getline(fin, inpS))
-{ stringstream streamLine(inpS);
-  getline(streamLine, inpS, ',');
-  plyr.pos = inpS;
-  getline(streamLine, inpS, ',');
-  getline(streamLine, inpS, ',');
-  plyr.name = inpS;
-  getline(streamLine, inpS, ',');
-  inpI= stoi(inpS);
-  plyr.id = inpI;
-  getline(streamLine, inpS, ',');
-  getline(streamLine, inpS, ',');
-  inpI= stoi(inpS);
-  plyr.salary = inpI;
-  getline(streamLine, inpS, ',');
-  getline(streamLine, inpS, ',');
-  getline(streamLine, inpS, ',');
-
-  inpF= stof(inpS);
-  plyr.average = inpF;
-
-  if(plyr.pos=="QB")
-    qbList.push_back(plyr);
-  if(plyr.pos=="RB")
-  {
-    rbList.push_back(plyr);
-    flexList.push_back(plyr);
-  }
-  if(plyr.pos=="WR")
-  {
-    wrList.push_back(plyr);
-    flexList.push_back(plyr);
-  }
-  if(plyr.pos=="TE")
-  {
-    teList.push_back(plyr);
-    flexList.push_back(plyr);
-  }
-  if(plyr.pos=="DST")
-    defList.push_back(plyr);
-}
-fin.close();
-for( int i=0; i<500000000; i++)
-{
-  int choice = rand() % qbList.size();
-  team.push_back(qbList[choice]);
-  choice = rand() % rbList.size();
-  team.push_back(rbList[choice]);
-  choice = rand() % rbList.size();
-  if(team[1].name == rbList[choice].name)
-  {
-    while(team[1].name == rbList[choice].name)
+  cin>>userInp;
+  switch(userInp)
     {
-        choice = rand() % rbList.size();
+      case 1:
+        fullGame();
+        break;
+      case 2:
+        showDown();
+        break;
+      case 9:
+        cout<<"Goodbye"<<endl;
+        return 0;
+      default:
+        cout<<"Not a valid choice, try again."<<endl;
     }
   }
-  team.push_back(rbList[choice]);
-  choice = rand() % wrList.size();
-  team.push_back(wrList[choice]);
-  choice = rand() % wrList.size();
-  if(team[2].name == wrList[choice].name)
-  {
-    while(team[2].name == wrList[choice].name)
-    {
-        choice = rand() % wrList.size();
-    }
-  }
-  team.push_back(wrList[choice]);
-  choice = rand() % wrList.size();
-  if(team[2].name == wrList[choice].name || team[3].name == wrList[choice].name)
-  {
-    while(team[2].name == wrList[choice].name || team[3].name == wrList[choice].name)
-    {
-        choice = rand() % wrList.size();
-    }
-  }
-  team.push_back(wrList[choice]);
-  choice = rand() % teList.size();
-  team.push_back(teList[choice]);
-  choice = rand() % flexList.size();
-  if(team[1].name == flexList[choice].name || team[2].name == flexList[choice].name || team[3].name == flexList[choice].name
-      || team[4].name == flexList[choice].name || team[5].name == flexList[choice].name || team[6].name == flexList[choice].name)
-  {
-    while(team[1].name == flexList[choice].name || team[2].name == flexList[choice].name || team[3].name == flexList[choice].name
-        || team[4].name == flexList[choice].name || team[5].name == flexList[choice].name || team[6].name == flexList[choice].name)
-    {
-        choice = rand() % flexList.size();
-    }
-  }
-      team.push_back(flexList[choice]);
 
-choice = rand() % defList.size();
-team.push_back(defList[choice]);
-for(int i=0; i<9; ++i)
-{
-  totSalary +=team[i].salary;
-  totPoints +=team[i].average;
-}
-if(totSalary<=maxSalary && totPoints>maxTeamAvg)
-{
-  finalSal=totSalary;
-  maxTeamAvg=totPoints;
-  finalTeam=team;
-  loopNum=i;
-}
-totSalary = 0;
-totPoints = 0;
-team.clear();
-}
-for(int i=0; i<9; ++i)
-{
-  cout<<finalTeam[i].pos<<"--"<<finalTeam[i].name<<endl;
-}
-cout<<"Total Avg = "<<maxTeamAvg<<endl;
-cout<<"Total Salary = "<<finalSal<<endl;
-cout<<"How many iterations to make this team = "<<loopNum<<endl;
-return 0;
+  return 0;
 }
